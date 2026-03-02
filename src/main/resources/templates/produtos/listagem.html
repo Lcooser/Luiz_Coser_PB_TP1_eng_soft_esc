@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Listagem de Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="layout">
+    <header class="header">
+        <h1>Sistema de Produtos</h1>
+        <nav>
+            <a th:href="@{/produtos}">Listar</a>
+            <a th:href="@{/produtos/novo}">Novo produto</a>
+        </nav>
+    </header>
+    <main class="main">
+        <div th:if="${sucesso}" class="alert alert-sucesso" th:text="${sucesso}" id="mensagem-sucesso"></div>
+        <div th:if="${erro}" class="alert alert-erro" th:text="${erro}" id="mensagem-erro"></div>
+        <h2>Produtos</h2>
+        <p th:if="${#lists.isEmpty(produtos)}">Nenhum produto cadastrado.</p>
+        <table th:if="${!#lists.isEmpty(produtos)}" class="tabela" id="tabela-produtos">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${produtos}">
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.nome}"></td>
+                <td th:text="${p.descricao}"></td>
+                <td th:text="${p.preco}"></td>
+                <td th:text="${p.quantidadeEstoque}"></td>
+                <td>
+                    <a th:href="@{/produtos/editar/{id}(id=${p.id})}" class="btn btn-editar">Editar</a>
+                    <form th:action="@{/produtos/deletar/{id}(id=${p.id})}" method="post" class="form-inline" th:data-id="${p.id}">
+                        <button type="submit" class="btn btn-excluir" th:data-id="${p.id}">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+</body>
+</html>
